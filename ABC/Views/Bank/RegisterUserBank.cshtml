@@ -1,0 +1,46 @@
+﻿@model ABC.Dtos.UserBankDto.CreateUserBankDto
+
+@{
+    string uid = (string)ViewData["UserUid"];
+    ViewData["Title"] = "Register User Bank";
+}
+
+<style>
+    .form-group{
+        width:300px;
+        margin:10px 0 10px 0;
+    }
+</style>
+<h2>Register User Bank</h2>
+
+<form asp-action="RegisterUserBank" method="post">
+    <!-- Hidden field for Uid, set by the server with the current user's UID -->
+   @*  @Html.HiddenFor(model => model.Uid, new { Value = ViewData["UserUid"] })
+ *@
+
+    <div class="form-group">
+        <label asp-for="BankId">Select Bank</label>
+        <!-- Dropdown for selecting a bank -->
+        @Html.DropDownListFor(model => model.BankId, (SelectList)ViewBag.Banks, "-- Choose a Bank --", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.BankId, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        <label asp-for="AccountNumber">Account Number</label>
+        @Html.TextBoxFor(model => model.AccountNumber, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.AccountNumber, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        <label asp-for="AvailableAmount">Available Amount</label>
+        @Html.TextBoxFor(model => model.AvailableAmount, new { @class = "form-control", @type = "number", @step = "0.01" })
+        @Html.ValidationMessageFor(model => model.AvailableAmount, "", new { @class = "text-danger" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+@section Scripts {
+    <!-- Enabling client-side validation -->
+    <partial name="_ValidationScriptsPartial" />
+}

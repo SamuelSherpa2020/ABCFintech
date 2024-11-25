@@ -1,0 +1,14 @@
+﻿@model ABC.Dtos.BankDto.GetBankDto
+
+<h2>Bank Details</h2>
+
+<div>
+    <h4>Bank</h4>
+    <dl class="row">
+        <dt class="col-sm-2">Bank Name</dt>
+        <dd class="col-sm-10">@Model.BankName</dd>
+    </dl>
+</div>
+
+<a asp-action="EditBank" asp-route-id="@Model.BankId">Edit</a> |
+<a asp-action="Index">Back to List</a>

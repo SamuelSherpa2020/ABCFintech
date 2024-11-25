@@ -1,0 +1,46 @@
+﻿@model List<ABC.Dtos.ExchangeRateDto>
+
+@* @if (User.Identity.IsAuthenticated)
+{
+    <p>Welcome, @User.Identity.Name!</p>
+}
+else
+{
+    <p>User is not authenticated.</p>
+} *@
+
+<div class="container mt-5">
+    <h2 style="text-align:center;">Exchange Rates</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Currency</th>
+                <th>Name</th>
+                <th>Unit</th>
+                <th>Buy Rate</th>
+                <th>Sell Rate</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var rate in Model)
+                {
+                    <tr>
+                        <td>@rate.Currency.Iso3</td>
+                        <td>@rate.Currency.Name</td>
+                        <td>@rate.Currency.Unit</td>
+                        <td>@(rate.Buy.HasValue ? rate.Buy.Value.ToString("F2") : "N/A")</td>
+                        <td>@(rate.Sell.HasValue ? rate.Sell.Value.ToString("F2") : "N/A")</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="text-center">No exchange rates available.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

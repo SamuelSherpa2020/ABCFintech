@@ -1,0 +1,55 @@
+﻿@model IEnumerable<ABC.Models.Transaction>
+
+@{
+    ViewBag.Title = "Transaction List";
+}
+
+<h2>Transaction List</h2>
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Transaction ID</th>
+            <th>Sender</th>
+            <th>Receiver</th>
+           @*  <th>Transferred Amount</th>
+            <th>Exchange Rate</th>
+            <th>Payout Amount</th> *@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var transaction in Model)
+        {
+            <tr>
+               
+                <td>@transaction.Sender?.FirstName</td>
+                <td>@transaction.Receiver?.FirstName</td>
+                <td>@transaction.PaymentDetail?.BankId</td>
+            </tr>
+            <tr>
+             
+                <td>@transaction.Sender?.MiddleName </td>
+                <td>@transaction.Receiver?.MiddleName </td>
+                <td>@transaction.PaymentDetail?.ReceiverAccountNumber</td>
+            </tr>
+            <tr>
+               
+                <td>@transaction.Sender?.LastName (@transaction.Sender?.Email)</td>
+                <td>@transaction.Receiver?.LastName</td>
+                <td>@transaction.PaymentDetail?.TransferedAmount (MYR)</td>
+            </tr>
+            <tr>
+             
+                <td>@transaction.Sender?.Address</td>
+                <td>@transaction.Receiver?.Address</td>
+                <td>@transaction.PaymentDetail?.ExchangeRate</td>
+            </tr>
+            <tr>
+               
+                <td>@transaction.Sender?.Country (@transaction.Sender?.Email)</td>
+                <td>@transaction.Receiver?.Country</td>
+                <td>@transaction.PaymentDetail?.PayoutAmount</td>
+            </tr>
+        }
+    </tbody>
+</table>

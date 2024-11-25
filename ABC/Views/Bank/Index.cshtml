@@ -1,0 +1,27 @@
+﻿@model IEnumerable<ABC.Dtos.BankDto.GetBankDto>
+
+<h2>Bank List</h2>
+
+<a asp-action="CreateBank">Create New Bank</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Bank Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bank in Model)
+        {
+            <tr>
+                <td>@bank.BankName</td>
+                <td>
+                    <a asp-action="BankDetails" asp-route-id="@bank.BankId">Details</a> |
+                    <a asp-action="EditBank" asp-route-id="@bank.BankId">Edit</a> |
+                    <a asp-action="DeleteBank" asp-route-id="@bank.BankId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
