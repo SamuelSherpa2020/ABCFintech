@@ -7,16 +7,46 @@
 
 <h2>Transaction List</h2>
 
-<table class="table table-striped table-bordered">
+<form method="get" action="/Transaction/Filter">
+    <div class="row">
+        <div class="col-md-3">
+            <label for="senderName">Sender Name</label>
+            <input type="text" id="senderName" name="senderName" class="form-control" placeholder="Search Sender Name" />
+        </div>
+        <div class="col-md-3">
+            <label for="receiverName">Receiver Name</label>
+            <input type="text" id="receiverName" name="receiverName" class="form-control" placeholder="Search Receiver Name" />
+        </div>
+        <div class="col-md-3">
+            <label for="bankId">Bank</label>
+            <select id="bankId" name="bankId" class="form-control">
+                <option value="">-- Select Bank --</option>
+                @foreach (var bank in ViewBag.Banks as SelectList)
+                {
+                    <option value="@bank.Value">@bank.Text</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="accountNumber">Account Number</label>
+            <input type="text" id="accountNumber" name="accountNumber" class="form-control" placeholder="Search Account Number" />
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <button type="submit" class="btn btn-primary">Filter</button>
+            <a href="/Transaction/Index" class="btn btn-secondary">Reset</a>
+        </div>
+    </div>
+</form>
+
+<table class="table table-striped table-bordered mt-3">
     <thead>
         <tr>
             <th>SN.</th>
             <th>Sender</th>
             <th>Receiver</th>
             <th>Payment Detail</th>
-           @*  <th>Transferred Amount</th>
-            <th>Exchange Rate</th>
-            <th>Payout Amount</th> *@
         </tr>
     </thead>
     <tbody>
@@ -32,25 +62,21 @@
                 <td>@transaction.PaymentDetail?.Bank.BankName</td>
             </tr>
             <tr>
-             
-                <td>@transaction.Sender?.MiddleName </td>
-                <td>@transaction.Receiver?.MiddleName </td>
+                <td>@transaction.Sender?.MiddleName</td>
+                <td>@transaction.Receiver?.MiddleName</td>
                 <td>@transaction.PaymentDetail?.ReceiverAccountNumber</td>
             </tr>
             <tr>
-               
-                <td>@transaction.Sender?.LastName </td>
+                <td>@transaction.Sender?.LastName</td>
                 <td>@transaction.Receiver?.LastName</td>
                 <td>@transaction.PaymentDetail?.TransferedAmount (MYR)</td>
             </tr>
             <tr>
-             
                 <td>@transaction.Sender?.Address</td>
                 <td>@transaction.Receiver?.Address</td>
                 <td>@transaction.PaymentDetail?.ExchangeRate</td>
             </tr>
             <tr>
-               
                 <td>@transaction.Sender?.Country</td>
                 <td>@transaction.Receiver?.Country</td>
                 <td>@transaction.PaymentDetail?.PayoutAmount</td>
