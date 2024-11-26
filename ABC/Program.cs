@@ -32,9 +32,10 @@ namespace ABC
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
         .AddCookie(options =>
         {
-            //options.LoginPath = "/Account/Login";
-            //options.LogoutPath = "/Account/Logout";
+            options.LoginPath = "/Account/Login";
+            options.LogoutPath = "/Account/Logout";
             options.ExpireTimeSpan = TimeSpan.FromMinutes(2);
+            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
         });
 
             // Configure Identity
