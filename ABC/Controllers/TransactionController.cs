@@ -3,6 +3,7 @@ using ABC.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Security.Claims;
 
 namespace ABC.Controllers
@@ -13,7 +14,7 @@ namespace ABC.Controllers
         IMapper mapper;
         IUnitOfWork uow;
 
-        public TransactionController(IMapper _mapper, IUnitOfWork _unitOfWork,UserManager<User> userManager)
+        public TransactionController(IMapper _mapper, IUnitOfWork _unitOfWork, UserManager<User> userManager)
         {
             mapper = _mapper;
             uow = _unitOfWork;
@@ -30,7 +31,9 @@ namespace ABC.Controllers
 
 
             var transactions = await uow.Repository<Transaction>()
-                .FindAsync(includeProperties: "Sender,Receiver,PaymentDetail");
+                .FindAsync(includeProperties: "Sender,Receiver,PaymentDetail.Bank");
+
+            var bankName = transactions.FirstOrDefault()!.PaymentDetail.BankId;
 
             return View(transactions);
         }

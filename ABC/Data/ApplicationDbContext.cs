@@ -2,14 +2,15 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace ABC.Data
 {
-    public class ApplicationDbContext: IdentityDbContext<User>
+    public class ApplicationDbContext : IdentityDbContext<User>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options):base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            
+
         }
         public DbSet<Bank> Banks { get; set; }
         public DbSet<UserBank> UserBanks { get; set; }
@@ -46,6 +47,14 @@ namespace ABC.Data
                 .WithMany()
                 .HasForeignKey(t => t.ReceiverId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+
+            builder.Entity<PaymentDetail>()
+               .HasOne(pd => pd.Bank)
+               .WithMany()
+               .HasForeignKey(pd => pd.BankId);
+
+            //base.OnModelCreating(builder);
         }
     }
 }

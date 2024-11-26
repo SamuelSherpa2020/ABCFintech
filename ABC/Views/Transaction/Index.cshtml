@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Transaction List";
+    int counter = 0;
 }
 
 <h2>Transaction List</h2>
@@ -9,9 +10,10 @@
 <table class="table table-striped table-bordered">
     <thead>
         <tr>
-            <th>Transaction ID</th>
+            <th>SN.</th>
             <th>Sender</th>
             <th>Receiver</th>
+            <th>Payment Detail</th>
            @*  <th>Transferred Amount</th>
             <th>Exchange Rate</th>
             <th>Payout Amount</th> *@
@@ -20,11 +22,14 @@
     <tbody>
         @foreach (var transaction in Model)
         {
+            {
+                counter++;
+            }
             <tr>
-               
+                <td rowspan="5" style="width:10px;">@counter</td>
                 <td>@transaction.Sender?.FirstName</td>
                 <td>@transaction.Receiver?.FirstName</td>
-                <td>@transaction.PaymentDetail?.BankId</td>
+                <td>@transaction.PaymentDetail?.Bank.BankName</td>
             </tr>
             <tr>
              
@@ -34,7 +39,7 @@
             </tr>
             <tr>
                
-                <td>@transaction.Sender?.LastName (@transaction.Sender?.Email)</td>
+                <td>@transaction.Sender?.LastName </td>
                 <td>@transaction.Receiver?.LastName</td>
                 <td>@transaction.PaymentDetail?.TransferedAmount (MYR)</td>
             </tr>
@@ -46,7 +51,7 @@
             </tr>
             <tr>
                
-                <td>@transaction.Sender?.Country (@transaction.Sender?.Email)</td>
+                <td>@transaction.Sender?.Country</td>
                 <td>@transaction.Receiver?.Country</td>
                 <td>@transaction.PaymentDetail?.PayoutAmount</td>
             </tr>
