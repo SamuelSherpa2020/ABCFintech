@@ -77,7 +77,7 @@ namespace ABC.Controllers
             }
 
             ViewBag.Currencies = currencies;
-
+            TempData["Currencies"] = JsonConvert.SerializeObject(currencies);
 
             return View();
         }
@@ -87,16 +87,45 @@ namespace ABC.Controllers
         {
             if (!ModelState.IsValid)
             {
-                // If validation fails, re-populate the ViewBag for the dropdown
+                var serializedCurrencies = TempData["Currencies"]?.ToString();
+                var currencies = string.IsNullOrEmpty(serializedCurrencies)
+                    ? new List<SelectListItem>()
+                    : JsonConvert.DeserializeObject<List<SelectListItem>>(serializedCurrencies);
+
+                ViewBag.Currencies = currencies;
+
                 var allBanks = await uow.Repository<Bank>().GetAllAsync();
                 var allBankDto = mapper.Map<List<GetBankDto>>(allBanks);
 
                 ViewBag.Banks = new SelectList(allBankDto, "BankId", "BankName");
 
-                return View(createPaymentDto); // Adjust if you have another action to redirect
+                return View(createPaymentDto);
             }
 
             var paymentDetail = mapper.Map<PaymentDetail>(createPaymentDto);
+
+            var bankId = paymentDetail.BankId;
+            var userReceiverBank = await uow.Repository<UserBank>().GetByIdAsync(bankId);
+
+            if (userReceiverBank == null || paymentDetail.ReceiverAccountNumber != userReceiverBank.AccountNumber)
+            {
+
+                var serializedCurrencies = TempData["Currencies"]?.ToString();
+                var currencies = string.IsNullOrEmpty(serializedCurrencies)
+                    ? new List<SelectListItem>()
+                    : JsonConvert.DeserializeObject<List<SelectListItem>>(serializedCurrencies);
+
+                ViewBag.Currencies = currencies;
+
+
+                // If validation fails, re-populate the ViewBag for the dropdown
+                var allBanks = await uow.Repository<Bank>().GetAllAsync();
+                var allBankDto = mapper.Map<List<GetBankDto>>(allBanks);
+
+                ViewBag.Banks = new SelectList(allBankDto, "BankId", "BankName");
+                ViewBag.AccountDontExist = "The A/C number don't exist in the current selected bank";
+                return View(createPaymentDto); 
+            }
 
             await uow.Repository<PaymentDetail>().AddAsync(paymentDetail);
             await uow.CompleteAsync();
